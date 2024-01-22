@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "833814584500",
+    "project_id": "fishlogger-b3e6a",
+    "storage_bucket": "fishlogger-b3e6a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:833814584500:android:6630055f90ba15144c0be1",
+        "android_client_info": {
+          "package_name": "com.example.fishlogger"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "833814584500-1krk32497q32jeatg6c8ihg0k8pegfs3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvt6qmK95fnQecNTpMnvXdsCrnwV3syTI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "833814584500-1krk32497q32jeatg6c8ihg0k8pegfs3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

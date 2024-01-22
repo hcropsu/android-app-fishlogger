@@ -1,0 +1,229 @@
+@startuml
+class com.example.fishlogger.FishAdapter {
+- List<Fish> fishList
+- OnClickListenerInterface onClickListenerInterface
++ void setFishList(List<Fish>)
++ Fish getFishAtPosition(int)
++ List<Fish> getFishList()
++ FishViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(FishViewHolder,int)
++ int getItemCount()
+}
+class com.example.fishlogger.Fish {
+- String fishId
+- String userId
+- String latitude
+- String longitude
+- String date
+- String species
+- float length
+- float weight
+- boolean hasCustomImage
++ {static} Creator<Fish> CREATOR
++ String getFishId()
++ String getUserId()
++ void setUserId(String)
++ String getLatitude()
++ void setLatitude(String)
++ String getLongitude()
++ void setLongitude(String)
++ String getDate()
++ void setDate(String)
++ String getSpecies()
++ void setSpecies(String)
++ float getLength()
++ void setLength(float)
++ float getWeight()
++ void setWeight(float)
++ boolean isHasCustomImage()
++ void setHasCustomImage(boolean)
++ int describeContents()
++ void writeToParcel(Parcel,int)
+}
+class com.example.fishlogger.FishRepository {
+- {static} String TAG
+- FirebaseFirestore firestore
+- String COLLECTION
++ void addFish(Fish)
++ void deleteFish(Fish,OnFishDeletedListener,int)
++ void updateFish(Fish,OnFishUpdatedListener)
++ void getAllFish(OnCompleteListener<QuerySnapshot>)
+}
+interface com.example.fishlogger.FishRepository$OnFishDeletedListener {
+~ void onFishDeleted(int)
+}
+interface com.example.fishlogger.FishRepository$OnFishUpdatedListener {
+~ void onFishUpdated()
+}
+class com.example.fishlogger.FishLargeImageDialog {
+- ImageView fishLargeImage
+- Context context
+- void init(Drawable)
+- void init(String)
+}
+class com.example.fishlogger.FishViewHolder {
+- ImageView fishImageView
+- TextView speciesTextView
+- TextView dateTextView
+- TextView locationTextView
+- TextView lengthTextView
+- TextView weightTextView
++ void bind(Fish)
++ void clearGlideLoading()
++ String parseDate(String)
++ ImageView getFishImageView()
+}
+class com.example.fishlogger.MyApplication {
+- {static} Context context
++ void onCreate()
++ {static} Context getAppContext()
+}
+class com.example.fishlogger.FishlistDiffCallback {
+- List<Fish> oldFishlist
+- List<Fish> newFishList
++ int getOldListSize()
++ int getNewListSize()
++ boolean areItemsTheSame(int,int)
++ boolean areContentsTheSame(int,int)
+}
+class com.example.fishlogger.AddFishActivity {
+- String TAG
+- LocationManager mLocationManager
+- LocationListener mLocationListener
+- Location mCurrentLocation
+- TextView headingTextView
+- EditText dateEditText
+- EditText locationEditText
+- AutoCompleteTextView fishSpeciesAutoCompleteTextView
+- EditText lengthEditText
+- EditText weightEditText
+- LocalDateTime date
+- String dateString
+- String fullDateString
+- int year
+- int month
+- int day
+- int hour
+- int minute
+- int second
+- {static} String userId
+- boolean isLocationEnabled
+- boolean editingFish
+- Fish editedFish
+- Fish latestFish
+- Context context
+- boolean isLocationServicesDialogShown
+# void onCreate(Bundle)
+# void onStart()
+# void onResume()
+# void onPause()
++ void saveFish(View)
++ void createAndAddFish()
+- void resetFields()
+- void promptLocationServices(Context)
+- void confirmEditedFish(Context)
+- void getCurrentLocation(LocationAvailableListener)
++ void addPictureDialog()
++ void launchCameraActivityFromAddFish()
+}
+interface com.example.fishlogger.AddFishActivity$LocationAvailableListener {
+~ void onLocationAvailable(Location)
+}
+class com.example.fishlogger.MainActivity {
++ {static} String TAG
+- {static} String[] REQUIRED_PERMISSIONS
+- {static} String[] REQUIRED_PERMISSIONS_API33
+- {static} int PERMISSION_REQUEST_CODE
+- int permissionRequestCount
+- {static} int MAX_PERMISSION_REQUEST_COUNT
+- FirebaseFirestore mFirestore
+- {static} FirebaseUser user
+- ActivityResultLauncher<Intent> signInLauncher
+- boolean isLocationServicesDialogShown
+- LocationManager mLocationManager
+- LocationListener mLocationListener
+- Location mCurrentLocation
+- MapView mapView
+- IMapController mapController
+- FishRepository fishRepository
+- boolean mIsLocationEnabled
+- List<Marker> fishMarkerList
+- Marker mUserMarker
+- Context context
+# void onCreate(Bundle)
+# void onStart()
+- void requestPermissions()
+- boolean allPermissionsGranted()
++ void onRequestPermissionsResult(int,String[],int[])
+- void showPermissionExplanationDialog()
+- void promptLocationServices(Context)
++ void login(View)
++ void createSignInIntent()
+- void onSignInResult(FirebaseAuthUIAuthenticationResult)
++ {static} FirebaseUser checkUser()
++ void launchAddFishActivity(View)
++ void launchFishListActivity(View)
++ void setFishMarkersOnMap()
++ void startPollingLocation()
+# void onResume()
+# void onPause()
++ void centerToCurrentLocation(View)
+}
+class com.example.fishlogger.FishListActivity {
++ {static} String TAG
+- RecyclerView fishRecyclerView
+- FishAdapter fishAdapter
+- FishViewModel fishViewModel
+- Context context
+- ActivityResultLauncher<Intent> addFishActivityLauncher
+# void onCreate(Bundle)
++ void onStart()
++ void onFishDeleted(int)
++ void onFishUpdated()
+}
+interface com.example.fishlogger.OnClickListenerInterface {
+~ void onItemClick(int)
+~ void onItemLongClick(int)
+~ void onImageClick(int)
+}
+class com.example.fishlogger.CameraActivity {
+- ActivityCameraBinding viewBinding
+- ImageCapture imageCapture
+- ExecutorService cameraExecutor
+- {static} String TAG
+- Fish imageFish
+- String fishId
+- FishRepository fishRepository
+# void onCreate(Bundle)
+- void takePhoto()
+- void startCamera()
++ void onDestroy()
++ void onFishUpdated()
+}
+class com.example.fishlogger.FishViewModel {
+- String TAG
+- FishRepository fishRepository
+- MutableLiveData<List<Fish>> fishListLiveData
++ LiveData<List<Fish>> getFishListLiveData()
++ void loadFishList()
+}
+
+
+com.example.fishlogger.Adapter <|-- com.example.fishlogger.FishAdapter
+android.os.Parcelable <|.. com.example.fishlogger.Fish
+com.example.fishlogger.FishRepository +.. com.example.fishlogger.FishRepository$OnFishDeletedListener
+com.example.fishlogger.FishRepository +.. com.example.fishlogger.FishRepository$OnFishUpdatedListener
+android.app.Dialog <|-- com.example.fishlogger.FishLargeImageDialog
+com.example.fishlogger.ViewHolder <|-- com.example.fishlogger.FishViewHolder
+android.app.Application <|-- com.example.fishlogger.MyApplication
+com.example.fishlogger.Callback <|-- com.example.fishlogger.FishlistDiffCallback
+androidx.appcompat.app.AppCompatActivity <|-- com.example.fishlogger.AddFishActivity
+com.example.fishlogger.AddFishActivity +.. com.example.fishlogger.AddFishActivity$LocationAvailableListener
+androidx.appcompat.app.AppCompatActivity <|-- com.example.fishlogger.MainActivity
+com.example.fishlogger.OnFishDeletedListener <|.. com.example.fishlogger.FishListActivity
+com.example.fishlogger.OnFishUpdatedListener <|.. com.example.fishlogger.FishListActivity
+androidx.appcompat.app.AppCompatActivity <|-- com.example.fishlogger.FishListActivity
+com.example.fishlogger.OnFishUpdatedListener <|.. com.example.fishlogger.CameraActivity
+androidx.appcompat.app.AppCompatActivity <|-- com.example.fishlogger.CameraActivity
+androidx.lifecycle.ViewModel <|-- com.example.fishlogger.FishViewModel
+@enduml

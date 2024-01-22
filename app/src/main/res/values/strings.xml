@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">FishLogger</string>
+    <string name="select_species">Select species</string>
+    <string-array name="fish_species_array">
+        <item>Ahven</item>
+        <item>Hauki</item>
+        <item>Kuha</item>
+        <item>Siika</item>
+        <item>Kuore</item>
+        <item>Muikku</item>
+        <item>Made</item>
+        <item>Taimen</item>
+        <item>Lohi</item>
+        <item>Lahna</item>
+    </string-array>
+</resources>
